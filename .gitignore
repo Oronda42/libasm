@@ -1,0 +1,6 @@
+.gdb_history
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+libasm/*.o
+testing/*.o

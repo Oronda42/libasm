@@ -1,0 +1,1 @@
+void test_ft_strlen();
