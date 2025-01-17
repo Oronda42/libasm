@@ -1,31 +1,42 @@
+GREEN = \033[0;32m
+RED = \033[0;31m
+PURPLE = \033[0;35m
+NC = \033[0m # No Color
+
 CC = gcc
-NASM = nasm
 CFLAGS = -Wall -Wextra -Werror -g
-NASMFLAGS = -f elf64
 
-# Targets
-TARGET = main
 
-ASM_SRC = ../libasm/ft_strlen.s ../libasm/ft_strcpy.s
-ASM_OBJ = $(ASM_SRC:.s=.o)
+NAME = main
 
-C_SRC = test_ft_strcpy.c test_ft_strlen.c main.c utils.c
+SRC =   utils.c test_ft_strlen.c test_ft_strcpy.c  test_ft_strcmp.c main.c
+OBJ = $(SRC:.c=.o)
+LIB = ../libasm/libasm.a
 
-# Rules
-all: $(TARGET)
+all: $(LIB) $(NAME)
 
-%.o: %.s
-	@echo "Assembling $< to $@"
-	$(NASM) $(NASMFLAGS) -o $@ $<
+$(LIB):
+	@echo "$(GREEN)Building libasm.a$(NC)"
+	$(MAKE) -C ../libasm
 
-$(TARGET): $(ASM_OBJ) $(C_SRC)
-	@echo "Compiling and linking $(TARGET)"
-	$(CC) $(CFLAGS) -o $@ $(ASM_OBJ) $(C_SRC)
+%.o: %.c
+	@echo "$(GREEN)Assembling $< to $@$(NC)"
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
-re: clean all
+$(NAME):  $(OBJ)
+	@echo  "$(PURPLE)Compiling and linking $(NAME)$(NC)"
+	$(CC) $(CFLAGS)  -o $@ $(OBJ) $(LIB)
 
 clean:
-	@echo "Cleaning up..."
-	rm -f $(TARGET) $(ASM_OBJ)
+	@echo "$(RED)Cleaning up...$(NC)"
+	$(MAKE) clean -C ../libasm
+	rm -f $(NAME) $(OBJ)
 
-.PHONY: all clean
+fclean: clean
+	@echo "Force cleaning up..."
+	$(MAKE) fclean -C ../libasm
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

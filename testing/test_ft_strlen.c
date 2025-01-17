@@ -1,11 +1,8 @@
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+
 
 #include "utils.h"
 
-extern size_t _ft_strlen(const char *s);
+#include "../libasm/libasm.h"
 
 void assert_string_length(char *str, char *label)
 {
@@ -25,7 +22,7 @@ void assert_string_length(char *str, char *label)
     }
 }
 
-void assert_strlen_function()
+void _ft_strlen_test()
 {
     print_header("ft_strlen");
 

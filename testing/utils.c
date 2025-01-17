@@ -11,7 +11,7 @@
 
 void print_header(char *name)
 {
-    printf(UL BOLD "%s\n\t" RESET, name);
+    printf(UL BOLD "\n%s\n\t" RESET, name);
     printf(BOLD "libc\t\t" RESET);
     printf(BOLD "libasm\t" RESET);
     printf("\n");
@@ -26,5 +26,4 @@ void printf_color(char *color, char *str)
         printf("%s%s%s", RED, str, RESET);
     else
         printf("%s", str);
-  
 }

@@ -1,11 +1,8 @@
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+
 
 #include "utils.h"
 
-extern char *_ft_strcpy(char *dest, const char *src);
+#include "../libasm/libasm.h"
 
 void assert_string_copy(const char *src, char *label) {
     char dest[100];  // Ensure the destination buffer is large enough
@@ -18,14 +15,14 @@ void assert_string_copy(const char *src, char *label) {
     printf("Expected: %s\t", expected);
     printf(" |\t");
     printf("Result: %s\t", dest);
-   if(strcmp(expected, dest) == 0) {
+    if(strcmp(expected, dest) == 0) {
         printf_color("green", "OK\n");
     } else {
         fprintf(stderr, "Assertion failed: expected %s, got %s\n", expected, dest);
     }
 }
 
-void assert_strcpy_function() {
+void _ft_strcpy_test() {
     print_header("ft_strcpy");
 
     // Normal cases

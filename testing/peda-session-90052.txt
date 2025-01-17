@@ -1,5 +1,0 @@
-break test_ft_strcpy.c:11
-
-set exec-wrapper logging enabled
-
-set exec-wrapper logging enabled
