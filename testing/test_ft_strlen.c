@@ -25,7 +25,7 @@ void assert_string_length(char *str, char *label)
     }
 }
 
-void test_ft_strlen()
+void assert_strlen_function()
 {
     print_header("ft_strlen");
 

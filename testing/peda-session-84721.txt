@@ -1,0 +1,6 @@
+break main.c:6
+break test_ft_strlen.c:16
+break test_ft_strcpy.c:27
+break main.c:6
+
+set exec-wrapper logging enabled

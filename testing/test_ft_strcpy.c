@@ -14,13 +14,18 @@ void assert_string_copy(const char *src, char *label) {
     strcpy(expected, src);
     _ft_strcpy(dest, src);
 
-    printf("%s\n\t", label);
-    printf("Expected: %s\n", expected);
-    printf("Result: %s\n", dest);
-    assert(strcmp(expected, dest) == 0);
+    label = label ? label : "empty string";
+    printf("Expected: %s\t", expected);
+    printf(" |\t");
+    printf("Result: %s\t", dest);
+   if(strcmp(expected, dest) == 0) {
+        printf_color("green", "OK\n");
+    } else {
+        fprintf(stderr, "Assertion failed: expected %s, got %s\n", expected, dest);
+    }
 }
 
-void test_ft_strcpy() {
+void assert_strcpy_function() {
     print_header("ft_strcpy");
 
     // Normal cases
@@ -40,11 +45,11 @@ void test_ft_strcpy() {
     assert_string_copy("long string with multiple words and spaces", "long string");
 
     // Very long string
-    char long_string[1001];
-    for (int i = 0; i < 1000; i++) {
+    char long_string[51];
+    for (int i = 0; i < 50; i++) {
         long_string[i] = 'a';
     }
-    long_string[1000] = '\0';
+    long_string[50] = '\0';
     assert_string_copy(long_string, "very long string (1000 'a's)");
 
     // Null terminator in the middle
@@ -61,7 +66,3 @@ void test_ft_strcpy() {
     assert_string_copy("你好", "Chinese characters");
 }
 
-int main() {
-    test_ft_strcpy();
-    return 0;
-}

@@ -1,10 +1,9 @@
-
-void test_ft_strlen();
-void test_ft_strcpy();
+ void assert_strlen_function();
+void assert_strcpy_function();
 
 int main()
 {
-    test_ft_strlen();
-    test_ft_strcpy();
+    assert_strlen_function();
+    assert_strcpy_function();
     return 0;
 }
