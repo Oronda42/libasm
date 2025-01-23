@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "utils.h": "c",
+        "assert.h": "c",
+        "stddef.h": "c",
+        "string.h": "c",
+        "libasm.h": "c",
+        "unistd.h": "c",
+        "fcntl.h": "c"
+    },
+}
