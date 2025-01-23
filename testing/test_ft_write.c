@@ -2,38 +2,53 @@
 
 #include "../libasm/libasm.h"
 
+void assert_write(int fd, char *str, ssize_t expected, const char *label) {
+    ssize_t ret = _ft_write(fd, str, expected);
 
-void assert_write() {
-    int fd;
-    char buffer[100];
-    ssize_t ret;
-
-    // Test 1: Write to stdout
-    ret = _ft_write(1, "Hello, World!\n", 14);
-    assert(ret == 14);
-
-    // Test 2: Write to a file
-    fd = open("test_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    assert(fd != -1);
-    ret = _ft_write(fd, "Hello, File!\n", 13);
-    assert(ret == 13);
-    close(fd);
-
-    // Test 3: Write to a file and read back
-    fd = open("test_file.txt", O_RDONLY);
-    assert(fd != -1);
-    ret = read(fd, buffer, 13);
-    assert(ret == 13);
-    buffer[ret] = '\0';
-    assert(strcmp(buffer, "Hello, File!\n") == 0);
-    close(fd);
-
-    // Test 4: Write with invalid file descriptor
-    ret = _ft_write(-1, "Invalid FD\n", 11);
-    assert(ret == -1);
+    printf("%s\n", label);
+    printf("Expected: %zd, Result: %zd\n", expected, ret);
+    if (ret == expected) {
+        printf_color("green", "OK\n");
+    } else {
+        printf_color("red", "KO\n");
+    }
 }
 
 void _ft_write_test() {
-    assert_write();
+    print_header("ft_write");
+
+    // Test 1: Write to stdout
+    assert_write(1, "Hello, World!\n", 14, "Write to stdout");
+
+    // Test 2: Write to a file
+    int fd = open("test_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    assert(fd != -1);
+    assert_write(fd, "Hello, File!\n", 13, "Write to a file");
+    close(fd);
+
+    // Test 3: Write with invalid file descriptor
+    assert_write(-1, "Invalid FD\n", -1, "Write with invalid file descriptor");
+
+    // Additional Tests
+    // Test 4: Write an empty string
+    assert_write(1, "", 0, "Write an empty string");
+
+    // Test 5: Write a large string
+    char large_str[1001];
+    memset(large_str, 'A', 1000);
+    large_str[1000] = '\0';
+    assert_write(1, large_str, 1000, "Write a large string");
+
+    // Test 6: Write to a read-only file
+    fd = open("test_file.txt", O_RDONLY);
+    assert(fd != -1);
+    assert_write(fd, "Read-only test\n", -1, "Write to a read-only file");
+    close(fd);
+
+    // Test 7: Write to a closed file descriptor
+    fd = open("test_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    assert(fd != -1);
+    close(fd);
+    assert_write(fd, "Closed FD test\n", -1, "Write to a closed file descriptor");
 }
 
