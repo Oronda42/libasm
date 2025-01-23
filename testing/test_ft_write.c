@@ -4,7 +4,14 @@
 
 void assert_write(int fd, char *str, ssize_t expected, const char *label) {
     ssize_t ret = _ft_write(fd, str, expected);
-
+   if(ret == -1) {
+        perror("_ft_write:");
+         ssize_t ret2 = write(fd, str, expected);
+         if(ret2 == -1) {
+            perror("write:");
+         }
+            
+    }
     printf("%s\n", label);
     printf("Expected: %zd, Result: %zd\n", expected, ret);
     if (ret == expected) {

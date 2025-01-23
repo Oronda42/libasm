@@ -1,40 +1,71 @@
-// #include <stdio.h>
-// #include <unistd.h>
-// #include <fcntl.h>
-// #include <string.h>
-// #include <assert.h>
+#include "utils.h"
 
-// extern ssize_t _ft_read(int fd, void *buf, size_t count);
+#include "../libasm/libasm.h"
 
-// void assert_read(int fd, size_t count, const char *label) {
-//     char buf1[100] = {0};
-//     char buf2[100] = {0};
 
-//     ssize_t ret1 = read(fd, buf1, count);
-//     lseek(fd, 0, SEEK_SET);  // Reset file descriptor position
-//     ssize_t ret2 = _ft_read(fd, buf2, count);
+void assert_strdup(const char *s, const char *label) {
+    char *expected = strdup(s);
+    char *result = _ft_strdup(s);
 
-//     printf("%s\n", label);
-//     printf("Expected: %zd, Result: %zd\n", ret1, ret2);
-//     assert(ret1 == ret2);
-//     assert(memcmp(buf1, buf2, count) == 0);
-// }
+    printf("%s\n", label);
+    printf("Expected: %s, Result: %s\n", expected, result);
+    if (strcmp(expected, result) == 0) {
+        printf_color("green", "OK\n");
+    } else {
+        printf_color("red", "KO\n");
+    }
 
-// void test_ft_read() {
-//     int fd = open("test_file.txt", O_RDONLY);
-//     if (fd == -1) {
-//         perror("open");
-//         return;
-//     }
+    free(expected);
+    free(result);
+}
 
-//     // Normal cases
-//     assert_read(fd, 10, "Read 10 bytes");
-//     assert_read(fd, 20, "Read 20 bytes");
+void assert_strdup_malloc_fail(const char *s, const char *label) {
+   
+    char *result = _ft_strdup(s);
+   
+    strerror(errno);
 
-//     // Edge cases
-//     assert_read(fd, 0, "Read 0 bytes");
-//     assert_read(fd, 100, "Read 100 bytes");
+    printf("%s\n", label);
+    if (result == NULL) {
+        printf_color("green", "OK (malloc failed as expected)\n");
+    } else {
+        printf_color("red", "KO (malloc did not fail)\n");
+        free(result);
+    }
+}
 
-//     close(fd);
-// }
+void _ft_strdup_test() {
+    print_header("ft_strdup");
 
+    // Normal cases
+    assert_strdup("Hello, World!", "Duplicate 'Hello, World!'");
+    assert_strdup("This is a test string.", "Duplicate 'This is a test string.'");
+
+    // Edge cases
+    assert_strdup("", "Duplicate empty string");
+    assert_strdup("A", "Duplicate single character");
+
+    // Additional Tests
+    // Test 1: Duplicate a string with special characters
+    assert_strdup("Hello!@#$%^&*()", "Duplicate 'Hello!@#$%^&*()'");
+
+    // Test 2: Duplicate a string with numbers
+    assert_strdup("1234567890", "Duplicate '1234567890'");
+
+    // Test 3: Duplicate a string with mixed case
+    assert_strdup("HelloWorld", "Duplicate 'HelloWorld'");
+    assert_strdup("helloworld", "Duplicate 'helloworld'");
+
+    // Test 4: Duplicate a large string
+    char large_str[1001];
+    memset(large_str, 'A', 1000);
+    large_str[1000] = '\0';
+    assert_strdup(large_str, "Duplicate a large string");
+
+    // Test 5: Duplicate a string with null character in the middle
+    assert_strdup("Hello\0World", "Duplicate 'Hello\\0World'");
+    // test with a malloc who will failed
+
+    // Test 6: Simulate malloc failure
+    assert_strdup_malloc_fail("Simulate malloc failure", "Simulate malloc failure");
+}

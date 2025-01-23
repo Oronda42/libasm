@@ -15,6 +15,7 @@ SRC =   testing/utils.c  \
 		testing/test_ft_strcmp.c \
 		testing/test_ft_write.c \
 		testing/test_ft_read.c \
+		testing/test_ft_strdup.c \
 		testing/main.c
 OBJ = $(SRC:.c=.o)
 LIB = libasm/libasm.a

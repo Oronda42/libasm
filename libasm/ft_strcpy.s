@@ -2,7 +2,7 @@ section .text
     global _ft_strcpy
 
 _ft_strcpy:
-       
+       push rdi
     .copy_loop:
         mov al, [rsi]       ; Load byte from source
         mov [rdi], al       ; Store byte to destination
@@ -12,5 +12,6 @@ _ft_strcpy:
         jnz .copy_loop      ; If not, continue loop
         
       
-    mov rax, rdi        ; Move destination pointer to rax
+    mov rax, [rsp]
+    pop rdi        ; Move destination pointer to rax
     ret

@@ -8,8 +8,11 @@ void assert_string_copy(const char *src, char *label) {
     char dest[100];  // Ensure the destination buffer is large enough
     char expected[100];
 
-    strcpy(expected, src);
-    _ft_strcpy(dest, src);
+    char* test = strcpy(expected, src);
+    char* test2 = _ft_strcpy(dest, src);
+
+     printf("test: %s\n", test);
+        printf("test2: %s\n", test2);
 
     label = label ? label : "empty string";
     printf("Expected: %s\t", expected);

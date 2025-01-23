@@ -7,35 +7,28 @@ section .text
 _ft_strdup:
     ; Save registers
     push rdi
-    push rsi
-    push rdx
 
-    ; Calculate the length of the input string
-    mov rdi, rdi        ; Set the input string as the argument for _ft_strlen
     call _ft_strlen     ; Call _ft_strlen
     add rax, 1          ; Add 1 to the length for the null terminator
 
     ; Allocate memory for the new string
     mov rdi, rax        ; Set the length as the argument for malloc
-    call malloc         ; Call malloc
+    call malloc  WRT ..plt       ; Call malloc
     test rax, rax       ; Check if malloc returned NULL
     jz .malloc_failed   ; If NULL, jump to malloc_failed
 
     ; Copy the input string to the newly allocated memory
-    mov rsi, rdi        ; Set the input string as the source for _ft_strcpy
+    mov rsi, [rsp]        ; Set the input string as the source for _ft_strcpy
     mov rdi, rax        ; Set the allocated memory as the destination for _ft_strcpy
     call _ft_strcpy     ; Call _ft_strcpy
 
     ; Restore registers and return
-    pop rdx
-    pop rsi
+   
     pop rdi
     ret
 
 .malloc_failed:
     ; Restore registers and return NULL
     xor rax, rax        ; Set rax to NULL
-    pop rdx
-    pop rsi
     pop rdi
     ret
