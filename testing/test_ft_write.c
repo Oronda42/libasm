@@ -1,40 +1,39 @@
-// #include <stdio.h>
-// #include <unistd.h>
-// #include <fcntl.h>
-// #include <string.h>
-// #include <assert.h>
+#include "utils.h"
 
-// extern ssize_t _ft_read(int fd, void *buf, size_t count);
+#include "../libasm/libasm.h"
 
-// void assert_read(int fd, size_t count, const char *label) {
-//     char buf1[100] = {0};
-//     char buf2[100] = {0};
 
-//     ssize_t ret1 = read(fd, buf1, count);
-//     lseek(fd, 0, SEEK_SET);  // Reset file descriptor position
-//     ssize_t ret2 = _ft_read(fd, buf2, count);
+void assert_write() {
+    int fd;
+    char buffer[100];
+    ssize_t ret;
 
-//     printf("%s\n", label);
-//     printf("Expected: %zd, Result: %zd\n", ret1, ret2);
-//     assert(ret1 == ret2);
-//     assert(memcmp(buf1, buf2, count) == 0);
-// }
+    // Test 1: Write to stdout
+    ret = _ft_write(1, "Hello, World!\n", 14);
+    assert(ret == 14);
 
-// void test_ft_read() {
-//     int fd = open("test_file.txt", O_RDONLY);
-//     if (fd == -1) {
-//         perror("open");
-//         return;
-//     }
+    // Test 2: Write to a file
+    fd = open("test_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    assert(fd != -1);
+    ret = _ft_write(fd, "Hello, File!\n", 13);
+    assert(ret == 13);
+    close(fd);
 
-//     // Normal cases
-//     assert_read(fd, 10, "Read 10 bytes");
-//     assert_read(fd, 20, "Read 20 bytes");
+    // Test 3: Write to a file and read back
+    fd = open("test_file.txt", O_RDONLY);
+    assert(fd != -1);
+    ret = read(fd, buffer, 13);
+    assert(ret == 13);
+    buffer[ret] = '\0';
+    assert(strcmp(buffer, "Hello, File!\n") == 0);
+    close(fd);
 
-//     // Edge cases
-//     assert_read(fd, 0, "Read 0 bytes");
-//     assert_read(fd, 100, "Read 100 bytes");
+    // Test 4: Write with invalid file descriptor
+    ret = _ft_write(-1, "Invalid FD\n", 11);
+    assert(ret == -1);
+}
 
-//     close(fd);
-// }
+void _ft_write_test() {
+    assert_write();
+}
 

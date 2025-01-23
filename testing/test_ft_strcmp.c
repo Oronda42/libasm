@@ -23,7 +23,7 @@ void _ft_strcmp_test() {
     print_header("ft_strcmp");
 
     // Normal cases
-    assert_strcmp("Hello", "Hello", "Compare 'Hello' with 'Hello'");
+     assert_strcmp("Hello", "Hello", "Compare 'Hello' with 'Hello'");
     assert_strcmp("Hello", "World", "Compare 'Hello' with 'World'");
     assert_strcmp("abc", "abcd", "Compare 'abc' with 'abcd'");
     assert_strcmp("abcd", "abc", "Compare 'abcd' with 'abc'");
@@ -34,4 +34,9 @@ void _ft_strcmp_test() {
     assert_strcmp("A", "B", "Compare different single characters");
     assert_strcmp("A", "", "Compare single character with empty string");
     assert_strcmp("", "A", "Compare empty string with single character");
+
+    //special cases
+    assert_strcmp("Hello\0World", "Hello\0World", "Compare 'Hello\\0World' with 'Hello\\0World'");
+    
+    
 }

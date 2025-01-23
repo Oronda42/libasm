@@ -5,3 +5,7 @@
 libasm/*.o
 testing/*.o
 testing/main
+peda-session-main.txt
+main
+libasm/libasm.a
+

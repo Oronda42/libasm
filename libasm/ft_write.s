@@ -1,10 +1,23 @@
 section .text
-    global ft_write
+    global _ft_write
+    extern __errno_location
 
-    ft_write:
-        mov rax, 1          ; syscall number for sys_write
-        mov rdi, rdi        ; Save the file descriptor
-        mov rsi, rsi        ; Save the buffer
-        mov rdx, rdx        ; Save the buffer length
-        syscall             ; Call the kernel
-        ret
+_ft_write:
+    ; Arguments:
+    ; rdi = file descriptor
+    ; rsi = buffer
+    ; rdx = count
+    mov rax, 1        ; syscall number for sys_write
+    syscall             ; Call the kernel
+    test rax, rax
+    js .error            ; Jump if return value is negative
+
+    ret   
+    
+.error:
+    neg rax              ; Negate the error code to make it positive
+    mov rdi, rax         ; Move the error code to rdi (first argument)
+    call __errno_location WRT ..plt ; Call ___errno_location to get the address of errno
+    mov [rax], rdi        ; Store the error code in errno
+    mov rax, -1           ; Restore the original negative error code
+    ret 
