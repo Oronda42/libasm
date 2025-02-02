@@ -13,7 +13,8 @@ $(NAME): $(OBJS)
 	$(NASM) $(NASMFLAGS) -o $@ $<
 
 clean:
-	rm -f $(OBJS) 
+	rm -f $(OBJS)
+	rm -f $(NAME)
 
 fclean:	clean
 	rm -f ${NAME}
